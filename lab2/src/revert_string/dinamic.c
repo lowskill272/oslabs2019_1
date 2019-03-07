@@ -1,6 +1,6 @@
 #include <string.h>
 
-void RevertString2(char *str)
+void RevertString(char *str)
 {
 	char ch=' ';
 	int N=(strlen(str));

@@ -13,5 +13,3 @@ void RevertString(char *str)
 	    str[i]=str[N-i-1];
 	    str[N-i-1]=ch;
 	}
-}
-
