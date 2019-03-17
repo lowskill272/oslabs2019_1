@@ -27,8 +27,10 @@ int main(int argc, char **argv) {
   struct MinMax min_max = GetMinMax(array, 0, array_size);
   free(array);
 
-  printf("min: %d\n", min_max.min);
-  printf("max: %d\n", min_max.max);
+  //printf("min: %d\n", min_max.min);
+  //printf("max: %d\n", min_max.max);
 
+for (int i=0;i<array_size;i++)
+    printf("i: %d\n", array[i]);
   return 0;
 }
