@@ -18,7 +18,7 @@
 int main(int argc, char **argv) {
   int seed = -1;
   int array_size = -1;
-  int pnum = -1; //число параллельных процессов
+  int pnum = -1; //на сколько делится массив
   bool with_files = false;
 
   while (true) {
@@ -141,6 +141,7 @@ int main(int argc, char **argv) {
       // read from files
     } else {
       // read from pipes
+      int pipe(int fd[2]);
     }
 
     if (min < min_max.min) min_max.min = min;
