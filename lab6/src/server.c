@@ -17,7 +17,7 @@
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
 
 uint64_t Factorial(const struct FactorialArgs *args) {
-  uint64_t ans = 1;
+  uint64_t ans = 1;clear
   for(uint64_t i = 0; args->begin + i <= args->end; i++){        
         ans *= (args->begin + i);
         /*printf( "begin+i: %llu end: %llu mod: %llu \n\t ans: %llu \n",\

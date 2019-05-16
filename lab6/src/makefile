@@ -1,3 +1,4 @@
+
 CC=gcc
 CFLAGS=-I.
 CURRENT_DIR=$(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
@@ -16,7 +17,3 @@ client: libFact.so
 	$(CC) -o client client.o -L$(shell pwd) -lFact -pthread -Wl,-rpath=$(shell pwd) $(CFLAGS)
 
 all: libFact client server
-
-
-clean_o:
-	$(shell rm ./*.o)
