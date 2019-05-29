@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-////////////////////EVERYTHING UP TO THIS MOMENT IS WORKING
+
 
   struct sockaddr_in server;
   server.sin_family = AF_INET;
