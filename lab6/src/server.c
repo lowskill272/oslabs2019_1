@@ -14,20 +14,33 @@
 #include "pthread.h"
 #include "libFact.h"
 
+#define COLOR "\033"
+#define _BOLD "[1"
+#define _THIN "[0"
+#define _RED ";31m"
+#define _BLUE ";34m"
+#define _GREEN ";32m"
+#define _YELLOW ";33m"
+#define _MAGENTA ";35m"
+#define _NC "[0m"
+
+
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
 
 uint64_t Factorial(const struct FactorialArgs *args) {
-  uint64_t ans = 1;clear
+  uint64_t ans = 1;
   for(uint64_t i = 0; args->begin + i <= args->end; i++){        
         ans *= (args->begin + i);
-        /*printf( "begin+i: %llu end: %llu mod: %llu \n\t ans: %llu \n",\
+        //ans %= args->mod;
+        
+        printf(COLOR _BOLD _YELLOW "begin+i: %llu end: %llu mod: %llu \n\t ans: %llu" COLOR _NC "\n",\
                                                         args->begin + i,\
                                                         args->end,\
                                                         args->mod,\
                                                         ans);
                                                         
                                                        
-        printf("ans: %llu \n", ans);*/
+        printf(COLOR _THIN _YELLOW "ans: %llu" COLOR _NC "\n", ans);
     }
     
   return ans;
@@ -60,6 +73,10 @@ int main(int argc, char **argv) {
       switch (option_index) {
       case 0:
         port = atoi(optarg);
+        /*if (port != 20001) {
+            printf("port must be 20001\n");
+            return 1;
+          }*/
         break;
       case 1:
         tnum = atoi(optarg);
@@ -91,6 +108,8 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Can not create server socket!");
     return 1;
   }
+
+////////////////////EVERYTHING UP TO THIS MOMENT IS WORKING
 
   struct sockaddr_in server;
   server.sin_family = AF_INET;
@@ -163,6 +182,16 @@ int main(int argc, char **argv) {
         part = size/tnum;
       
       for (uint32_t i = 0, j = 1; i < real_tnum; i++, j=i+1) {
+        // TODO: parallel somehow 
+        
+            
+        //pthread_mutex_lock(&mut);
+        
+        /*
+        args[i].begin = begin*part;
+        args[i].end = end;
+        args[i].mod = mod;
+        */
         args[i].mod = mod;
         if(real_tnum != 1 && j == real_tnum && real_tnum*part <= end){
             args[i].begin = i*part + 1;
@@ -178,6 +207,7 @@ int main(int argc, char **argv) {
                 args[i].end = j*part;
             }
               
+        //pthread_mutex_unlock(&mut);
 
         if (pthread_create(&threads[i], NULL, ThreadFactorial,
                            (void *)&args[i])) {
@@ -188,7 +218,7 @@ int main(int argc, char **argv) {
 
       uint64_t total = 1;
           
-      printf("tnum: %llu real_tnum: %llu \n", tnum, real_tnum);
+      printf(COLOR _THIN _GREEN "tnum: %llu real_tnum: %llu" COLOR _NC "\n", tnum, real_tnum);
       for (uint32_t i = 0; i < real_tnum; i++) {
                
                ///mycode
@@ -202,6 +232,15 @@ int main(int argc, char **argv) {
             total = result % mod;
         else
             total *= result, total %= mod;
+        
+        
+        /*if(real_tnum < tnum)
+            for(uint32_t j = 0; j < tnum; j++)
+                    total = MultModulo(total, result, mod);
+        else
+            total = MultModulo(total, result, mod);
+            */
+        
         pthread_mutex_unlock(&mut);
       }
 

@@ -1,9 +1,8 @@
-
 CC=gcc
 CFLAGS=-I.
 CURRENT_DIR=$(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
-
+all: libFact.so client server
 libFact.so : libFact.h 
 	$(CC) -c -fPIC libFact.c -o libFact.o
 	$(CC) -o libFact.so -shared libFact.o
@@ -16,4 +15,3 @@ client: libFact.so
 	$(CC) -c client.c -o client.o
 	$(CC) -o client client.o -L$(shell pwd) -lFact -pthread -Wl,-rpath=$(shell pwd) $(CFLAGS)
 
-all: libFact client server

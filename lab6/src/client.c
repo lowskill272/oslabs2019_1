@@ -12,6 +12,17 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
+
+#define COLOR "\033"
+#define _BOLD "[1"
+#define _THIN "[0"
+#define _RED ";31m"
+#define _BLUE ";34m"
+#define _GREEN ";32m"
+#define _YELLOW ";33m"
+#define _MAGENTA ";35m"
+#define _NC "[0m"
+
 char** Load(char* filename);
 
 struct Server {
@@ -128,7 +139,7 @@ int main(int argc, char **argv) {
         server_port_list = Load(servers);
         char** s_p_ptr = server_port_list;
         while(*s_p_ptr != NULL)
-            printf("SERVER from file: %s \n", *s_p_ptr++);
+            printf(COLOR _THIN _YELLOW "SERVER from file: %s" COLOR _NC "\n", *s_p_ptr++);
         serverCNT = s_p_ptr - server_port_list;
         
         break;
@@ -163,8 +174,11 @@ int main(int argc, char **argv) {
       strcpy(to[i].ip, addr_part);
       addr_part = strtok(NULL,":");
       to[i].port = atoi(addr_part);
-      printf("SERVER: [ip: %10s port: %7i] \n", to[i].ip, to[i].port);
+      printf(COLOR _BOLD _YELLOW "SERVER: [ip: %10s port: %7i]" COLOR _NC "\n", to[i].ip, to[i].port);
   }
+
+////////////////////EVERYTHING UP TO THIS MOMENT IS WORKING
+
 
     uint64_t part;
 
@@ -206,7 +220,7 @@ int main(int argc, char **argv) {
 
     mail2server[i].mod = mod;
     
-    printf("Values are {begin: %llu end: %llu mod: %llu} \n",\
+    printf(COLOR _BOLD _BLUE "Values are {begin: %llu end: %llu mod: %llu}" COLOR _NC "\n",\
                                     mail2server[i].begin,\
                                     mail2server[i].end,\
                                     mail2server[i].mod);
@@ -215,7 +229,7 @@ int main(int argc, char **argv) {
     pthread_create(&threads[i], NULL, ConnectAndSR, (void *)&mail2server[i]);
     
     pthread_join(threads[i], (void **)&partial_res[i]);
-    printf("Partial res: %llu \n",\
+    printf(COLOR _THIN _RED "Partial res: %llu" COLOR _NC "\n",\
                                     partial_res[i]);
   }
   free(to);
@@ -224,7 +238,7 @@ int main(int argc, char **argv) {
   for(int i = 0; i < servers_num; i++)
     real_result *= partial_res[i], real_result %= mod;
 
-  printf("Final result: %llu \n",\
+  printf(COLOR _BOLD _GREEN "Final result: %llu" COLOR _NC "\n",\
                                     real_result);
   return 0;
 }
